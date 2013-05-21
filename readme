@@ -33,6 +33,7 @@ E.
 
 
 *** Folders description
+Dont forget to add the path to your folder structure in the variables.vars class
 
 DEFT2013/arff/		The ARFF files to reproduce experiments from gui or code (students can use those directly in weka gui with no further manipulations)
 DEFT2013/corpus		The features lists (verbs, ngrams and so on) generated to build ARFF (you can regen thoses from software using classes of package "analyse")
