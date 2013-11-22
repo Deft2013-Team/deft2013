@@ -16,30 +16,30 @@ import variables.vars;
 /**
  * 
  * Classifier suite developed for DEFT2013 Machine Learning and Classification Task 
- * applied focusing on the automatic analysis of recipes in French.
+ * focusing on the automatic analysis of recipes in French.
  * 
  * http://deft.limsi.fr/2013/index.php?id=1&lang=en
  * 
  * Paper is on ResearchGate at:
  * http://goo.gl/vSVBU
  
- * The code authors : 
- * 			Dr Eric Charton http://www.echarton.con twitter/ericcharton
+ * The code authors: 
+ * 			Dr Eric Charton http://www.echarton.com twitter.com/ericcharton
  * 			Dr Marie-Jean Meurs http://mjmrsc.com/research/ twitter.com/mjmrsc
  * 
  * The scientific contributors
- * 	        Dr Eric Charton (1), Dr Marie-jean Meurs (2), Dr Ludovic Jean-Louis (1), Pr Michel Gagnon (1)
+ * 	        Dr Eric Charton (1), Dr Marie-Jean Meurs (2), Dr Ludovic Jean-Louis (1), Pr Michel Gagnon (1)
  * 			(1)(Polytechnique Montréal)(2)Concordia university
  * 
  * This java tool uses Weka, LibSVM to solve the classification Task of DEFT2013 ML campaign. It is 
  * publicly released to allow experience verification and student training. 
  * 
- * Please free to use it with official corpus resources or with the ARFF provided. 
+ * Please feel free to use it with official corpus resources or with the provided ARFF files. 
  * 
- * This software is free to use, modifiy and redistribute under Creative Commons by-nc/3.0 Licence Term
+ * This software is free to use, modify and redistribute under Creative Commons by-nc/3.0 License Term
  * http://creativecommons.org/licenses/by-nc/3.0/
  * 
- * @author eric, MJ
+ * @author Eric, MJ
  *
  */
 public class NgramExtractor {
@@ -49,10 +49,10 @@ public class NgramExtractor {
 	public static void main(String[] args) {
 		
 		
-		// stocker tous les ngrams
+		// store all ngrams
 		HashMap<String, Integer> allgrams = new HashMap<String, Integer>();
 		
-		// par difficulté
+		// by difficulty
 		HashMap<String,Map<String,Integer>> c_dif  = new HashMap<String,Map<String,Integer>>();
 	
 		
@@ -65,10 +65,9 @@ public class NgramExtractor {
 			BufferedReader reader = new BufferedReader(new FileReader(variable.pathToCorpus));
 	       
 	   
-	        //--------------------------------------------
-	        // repeat until all lines is read
-	        // from the file
-	        //--------------------------------------------
+	        //--------------------------------------------------
+	        // repeat until all lines from input file are read
+	        //--------------------------------------------------
 			String text = null;
 			String content = null;
 			
@@ -79,14 +78,14 @@ public class NgramExtractor {
 			
 	        while (( text = reader.readLine()) != null) {
 	        	
-	        	// detecte une recette
+	        	// recipe detection
 	        	if (text.contains("<recette id=")){
 	        		
 	        		String id = text.replace("<recette id=\"", "");
 	        		id = id.replace("\">", "");
 	        		// System.out.println(id);
 	        		
-	        		// lire la suite
+	        		// continue to read
 	        		content = reader.readLine();
 	        		content = content.replaceAll("\t", "");
 	        		content = content.replaceFirst("\\s+", "");
@@ -135,7 +134,7 @@ public class NgramExtractor {
 	        				
 	        			}
 	        			
-	        			// texte de la recette
+	        			// recipe text
 	        			if (content.contains("<preparation>")){
 	        				recette = "";
 	        				while ( ! content.contains("</preparation>") ) {
@@ -150,15 +149,15 @@ public class NgramExtractor {
 	        				recette = recette.replace("<![CDATA[", "");
 	        				recette = recette.replace("]]>", "");
 	        				
-	        				recette = recette.replaceAll("\\.", " \\. "); // espace les points
-	        				recette = recette.replaceAll("\n", " "); // supprime les retours a la ligne
-	        				recette = recette.replaceAll("[,();:’!?\\.]", " , "); // espace les segmentations et remplace par caractère unique
+	        				recette = recette.replaceAll("\\.", " \\. "); // space dots
+	        				recette = recette.replaceAll("\n", " "); // delete carriage return
+	        				recette = recette.replaceAll("[,();:’!?\\.]", " , "); // space segments, replace by unique char
 	        				
-	        				// réduit les doubles espaces
+	        				// replace double spaces by unique space
 	        				recette = recette.replaceAll("\\s+", " ");
 	        				recette = recette.toLowerCase();
 	        				
-	        				// extrait les n-grams
+	        				// extract n-grams
 	        				String[] wordsinrecepy = recette.split(" ");
 	        				
 	        				int granumbers = variable.ngramsSize;
@@ -176,12 +175,12 @@ public class NgramExtractor {
 	        					
 	        					if (! grams.contains(",")){
 	        						
-	        						// remplis l'index general
+	        						// fill general index
 		        					if (allgrams.containsKey(grams) ) { 
 		        							int value = allgrams.get(grams) +1;
 		        							allgrams.put(grams, value);
 		        							
-		        							// remplis hash multidim
+		        							// fill multidimensional hash
 		        							if ( c_dif.get(grams).containsKey(currentDiff) ){
 		        								int actualvalue = c_dif.get(grams).get(currentDiff);
 		        								c_dif.get(grams).put(currentDiff, actualvalue + 1);
@@ -194,21 +193,17 @@ public class NgramExtractor {
 		        							allgrams.put(grams, 1);
 		        							
 		        							
-		        							// remplis hash multidim
+		        							// fill multidimensional hash
 		        							c_dif.put(grams, new HashMap<String,Integer>());
 		        							c_dif.get(grams).put(currentDiff, 1);
 		        					}
 		        					
-		        					// replis l'index de type
-		        					
-		        					
-
+		        					// fill type index
 		        					
 	        					}
 	        				}
 	        				
 	        			}
-	        			
 	        			
 	        			content = reader.readLine();
 	        			content = content.replaceAll("\t", "");
@@ -217,12 +212,10 @@ public class NgramExtractor {
 	        		
 	        	}
 	        
-	        	
-	        	
-	        	
-	        	
-	 
 	        }
+	        
+	        reader.close();
+
 	    }catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -234,9 +227,9 @@ public class NgramExtractor {
         // stats
     	System.out.println("Statistiques n-grams");
 		
-    	ArrayList as = new ArrayList( allgrams.entrySet() );  
+    	ArrayList<Object> as = new ArrayList<Object>( allgrams.entrySet() );  
         
-        Collections.sort( as , new Comparator() {  
+        Collections.sort( as , new Comparator<Object>() {  
         	public int compare( Object o2 , Object o1  )  
             {  
                 Map.Entry e1 = (Map.Entry)o1 ;  
@@ -247,7 +240,7 @@ public class NgramExtractor {
             }  
         });  
           
-       Iterator i = as.iterator();  
+       Iterator<?> i = as.iterator();  
        while ( i.hasNext() )  
        {  
     	   String ngram = (String)i.next().toString();
