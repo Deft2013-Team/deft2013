@@ -16,30 +16,30 @@ import variables.vars;
 /**
  * 
  * Classifier suite developed for DEFT2013 Machine Learning and Classification Task 
- * applied focusing on the automatic analysis of recipes in French.
+ * focusing on the automatic analysis of recipes in French.
  * 
  * http://deft.limsi.fr/2013/index.php?id=1&lang=en
  * 
  * Paper is on ResearchGate at:
  * http://goo.gl/vSVBU
  
- * The code authors : 
- * 			Dr Eric Charton http://www.echarton.con twitter/ericcharton
+ * The code authors: 
+ * 			Dr Eric Charton http://www.echarton.com twitter.com/ericcharton
  * 			Dr Marie-Jean Meurs http://mjmrsc.com/research/ twitter.com/mjmrsc
  * 
  * The scientific contributors
- * 	        Dr Eric Charton (1), Dr Marie-jean Meurs (2), Dr Ludovic Jean-Louis (1), Pr Michel Gagnon (1)
+ * 	        Dr Eric Charton (1), Dr Marie-Jean Meurs (2), Dr Ludovic Jean-Louis (1), Pr Michel Gagnon (1)
  * 			(1)(Polytechnique Montréal)(2)Concordia university
  * 
  * This java tool uses Weka, LibSVM to solve the classification Task of DEFT2013 ML campaign. It is 
  * publicly released to allow experience verification and student training. 
  * 
- * Please free to use it with official corpus resources or with the ARFF provided. 
+ * Please feel free to use it with official corpus resources or with the provided ARFF files. 
  * 
- * This software is free to use, modifiy and redistribute under Creative Commons by-nc/3.0 Licence Term
+ * This software is free to use, modify and redistribute under Creative Commons by-nc/3.0 License Term
  * http://creativecommons.org/licenses/by-nc/3.0/
  * 
- * @author eric, MJ
+ * @author Eric, MJ
  *
  */
 public class FeatureExtractor {
@@ -53,7 +53,7 @@ public class FeatureExtractor {
 				HashMap<String, Integer> type = new HashMap<String, Integer>();
 				HashMap<String, Integer> ingredientrefs = new HashMap<String, Integer>();
 				
-				// stats croisées
+				// cross-stats 
 				HashMap<String, String> c_type = new HashMap<String, String>();
 				HashMap<String, String> c_niv = new HashMap<String, String>();
 				HashMap<String, String> c_recette = new HashMap<String, String>();
@@ -66,10 +66,9 @@ public class FeatureExtractor {
 					BufferedReader reader = new BufferedReader(new FileReader(variable.pathToCorpus));
 			       
 			   
-			        //--------------------------------------------
-			        // repeat until all lines is read
-			        // from the file
-			        //--------------------------------------------
+			        //--------------------------------------------------
+			        // repeat until all lines from input file are read
+			        //--------------------------------------------------
 					String text = null;
 					String content = null;
 					
@@ -78,14 +77,14 @@ public class FeatureExtractor {
 					
 			        while (( text = reader.readLine()) != null) {
 			        	
-			        	// detecte une recette
+			        	// recipe detection
 			        	if (text.contains("<recette id=")){
 			        		
 			        		String id = text.replace("<recette id=\"", "");
 			        		id = id.replace("\">", "");
 			        		System.out.println(id);
 			        		
-			        		// lire la suite
+			        		// continue to read
 			        		content = reader.readLine();
 			        		content = content.replaceAll("\t", "");
 			        		content = content.replaceFirst("\\s+", "");
@@ -190,15 +189,15 @@ public class FeatureExtractor {
 			        					ingredient = ingredient.replaceAll("mariné", " ");
 				        				
 			        
-			        					// nettoyage sequence
+			        					// text sequence cleaning
 			        					
 			        					
 			        					
 			        					ingredient = ingredient.replaceAll("/", " ");
-			        					ingredient = ingredient.replaceAll("\\s+", " "); // multiples espaces
+			        					ingredient = ingredient.replaceAll("\\s+", " "); // multiple spaces
 			        					
-			        					ingredient = ingredient.replaceAll("\\s$", ""); // Espace a la fin
-			        					ingredient = ingredient.replaceAll("^\\s", ""); // Espace au début
+			        					ingredient = ingredient.replaceAll("\\s$", ""); // spaces end line 
+			        					ingredient = ingredient.replaceAll("^\\s", ""); // spaces begin line
 			        					
 			        					ingredient = ingredient.replaceFirst("^d'", "");
 			        					ingredient = ingredient.replaceFirst("^g de ", "");
@@ -227,8 +226,8 @@ public class FeatureExtractor {
 			        					ingredient = ingredient.replaceFirst("^de ", "");
 			        					ingredient = ingredient.replaceFirst("^ de ", "");
 			        					ingredient = ingredient.replaceFirst("^s de ", "");
-			        					ingredient = ingredient.replaceAll("\\s$", ""); // Espace a la fin
-			        					ingredient = ingredient.replaceAll("^\\s", ""); // Espace au début
+			        					ingredient = ingredient.replaceAll("\\s$", ""); // spaces end line 
+			        					ingredient = ingredient.replaceAll("^\\s", ""); // spaces begin line
 			        					
 			        					// add
 			        					if ( ! ingredient.isEmpty() && ingredient.length() > 2) {
@@ -262,7 +261,7 @@ public class FeatureExtractor {
 			        				//
 			        				// System.out.println("Recette:" + recette);
 			        				recette = recette.toLowerCase();
-			        				// store the recipy text
+			        				// store the recipe text
 			        				c_recette.put(id,recette);
 			        				
 			        			}
@@ -275,12 +274,9 @@ public class FeatureExtractor {
 			        		
 			        	}
 			        
-			        	
-			        	
-			        	
-			        	
-			 
 			        }
+			        reader.close();
+			        
 			    }catch (FileNotFoundException e) {
 		            e.printStackTrace();
 		        } catch (IOException e) {
@@ -292,22 +288,22 @@ public class FeatureExtractor {
 		        // stats
 		    	System.out.println("Statistiques");
 		        
-		    	 // initialise le compte de difficulté
+		    	 // Initialize difficulty count
 		        HashMap<String, Integer> countdiff = new HashMap<String, Integer>();
 		        HashMap<String, Integer> counttype = new HashMap<String, Integer>();
 			        
 		    	
-		        Iterator itn = type.keySet().iterator();
+		        Iterator<String> itn = type.keySet().iterator();
 		        while(itn.hasNext()){
-		        	String key = (String) itn.next();
+		        	String key = itn.next();
 		        	counttype.put(key, 0);
 		        	System.out.println("Type de plat: " + key + " " + type.get(key));
 		        	
 		        }
 		        
-		        Iterator itt = niveau.keySet().iterator();
+		        Iterator<String> itt = niveau.keySet().iterator();
 		        while(itt.hasNext()){
-		        	String key = (String) itt.next();
+		        	String key = itt.next();
 		        	countdiff.put(key,0);
 		        	System.out.println("Niveau: " + key + " " + niveau.get(key)); // string du niveau / type
 		        }
@@ -315,16 +311,16 @@ public class FeatureExtractor {
 		    	System.out.println("<ingredients>Ingrédients collectés</ingredients>");
 		        
 		        
-		       // Iterator iti = ingredientrefs.keySet().iterator();
+		       // Iterator<String> iti = ingredientrefs.keySet().iterator();
 		    	// while(iti.hasNext()){
 		    	//	String key = (String) iti.next();
 		    	//	System.out.println("Ingrédient: " + key + " " + ingredientrefs.get(key));
 		    	//}
 		        
 		        
-		        ArrayList as = new ArrayList( ingredientrefs.entrySet() );  
+		        ArrayList<?> as = new ArrayList<Object>( ingredientrefs.entrySet() );  
 		          
-		        Collections.sort( as , new Comparator() {  
+		        Collections.sort( as , new Comparator<Object>() {  
 		        	public int compare( Object o2 , Object o1  )  
 		            {  
 		                Map.Entry e1 = (Map.Entry)o1 ;  
@@ -335,40 +331,40 @@ public class FeatureExtractor {
 		            }  
 		        });  
 		          
-		       Iterator i = as.iterator();  
+		       Iterator<?> i = as.iterator();  
 		       while ( i.hasNext() )  
 		       {  
-		    	   // mot en cours
+		    	   // current word
 		    	   // beurre=2998
 		    	   String ingredseq = (String)i.next().toString();
-		    	   String[] ingredname = ingredseq.split("=");// ingredname[0] contient le nom de l'ingrédient
+		    	   String[] ingredname = ingredseq.split("=");// ingredname[0] contains ingredient name
 		          
 		           
-		           // search presence in recette
-		           Iterator itirec = c_recette.keySet().iterator();
+		           // search presence in recipe
+		           Iterator<String> itirec = c_recette.keySet().iterator();
 		           // browse all
 
-		           // variable de pertinence du mot cle - si inférieur a x, ne pas retenir
+		           //  keyword relevance - if lower than x, do not take into account
 		           int pertinence =0; 
 		           
-		           // parcoure toutes les recettes
+		           // go over all the recipes
 		           while(itirec.hasNext()){
 		        	   
-		        	    // un numero
-			    		String idnumber = (String) itirec.next();
+		        	    // id number
+			    		String idnumber = itirec.next();
 			    		
-			    		// collecte le texte de la recette d'apres le numero
+			    		// get recipe text using recipe idnumber 
 			    		String textrecette = c_recette.get(idnumber);
 			    		
-			    		// cherche le mot en cours d'exploration
+			    		// find current word
 			    		if (textrecette.contains(ingredname[0])){
 			    			
 			    			pertinence++;
 			    			
-			    			// incrémente la difficulté
+			    			// Increment difficulty
 			    			String difficulty = c_niv.get(idnumber);
 			    			countdiff.put(difficulty , countdiff.get(difficulty )+1);
-			    			// incremente le type
+			    			// Increment type
 			    			String niveauforthisrecipy = c_type.get(idnumber);
 			    			counttype.put( niveauforthisrecipy , counttype.get(niveauforthisrecipy)+1);
 			    			// verbose
@@ -379,23 +375,23 @@ public class FeatureExtractor {
 		           
 		           if (pertinence > variable.featureapparitionsminimum ){
 		        	   
-		        	   // affiche la feature de l'ingrédient
+		        	   // print ingredient feature
 		        	   System.out.print( ingredseq  + "\t\t\t"); 
 		        	   
 			            // display results for this keyword
-			           // difficulté
-			           Iterator tcross = counttype.keySet().iterator();
+			           // Difficulty
+			           Iterator<String> tcross = counttype.keySet().iterator();
 				       while(tcross.hasNext()){
-				        	String key = (String) tcross.next();
+				        	String key = tcross.next();
 				        	System.out.print( key + "\t" + counttype.get(key) + "\t" ); 
 				        	counttype.put(key,0); // reset
 				       }
 				       // type
 				       System.out.print("\t\t"); 
 				       
-				       Iterator itcross = countdiff.keySet().iterator();
+				       Iterator<String> itcross = countdiff.keySet().iterator();
 				       while(itcross.hasNext()){
-				        	String key = (String) itcross.next();
+				        	String key = itcross.next();
 				        	System.out.print( key + "\t" + countdiff.get(key) + "\t"); 
 				        	countdiff.put(key,0); // reset
 				        }
