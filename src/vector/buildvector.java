@@ -3,30 +3,30 @@ package vector;
 /**
  * 
  * Classifier suite developed for DEFT2013 Machine Learning and Classification Task 
- * applied focusing on the automatic analysis of recipes in French.
+ * focusing on the automatic analysis of recipes in French.
  * 
  * http://deft.limsi.fr/2013/index.php?id=1&lang=en
  * 
  * Paper is on ResearchGate at:
  * http://goo.gl/vSVBU
  
- * The code authors : 
- * 			Dr Eric Charton http://www.echarton.con twitter/ericcharton
+ * The code authors: 
+ * 			Dr Eric Charton http://www.echarton.com twitter.com/ericcharton
  * 			Dr Marie-Jean Meurs http://mjmrsc.com/research/ twitter.com/mjmrsc
  * 
  * The scientific contributors
- * 	        Dr Eric Charton (1), Dr Marie-jean Meurs (2), Dr Ludovic Jean-Louis (1), Pr Michel Gagnon (1)
+ * 	        Dr Eric Charton (1), Dr Marie-Jean Meurs (2), Dr Ludovic Jean-Louis (1), Pr Michel Gagnon (1)
  * 			(1)(Polytechnique Montréal)(2)Concordia university
  * 
  * This java tool uses Weka, LibSVM to solve the classification Task of DEFT2013 ML campaign. It is 
  * publicly released to allow experience verification and student training. 
  * 
- * Please free to use it with official corpus resources or with the ARFF provided. 
+ * Please feel free to use it with official corpus resources or with the provided ARFF files. 
  * 
- * This software is free to use, modifiy and redistribute under Creative Commons by-nc/3.0 Licence Term
+ * This software is free to use, modify and redistribute under Creative Commons by-nc/3.0 License Term
  * http://creativecommons.org/licenses/by-nc/3.0/
  * 
- * @author eric, MJ
+ * @author Eric, MJ
  *
  */
 
@@ -44,7 +44,7 @@ import variables.vars;
  * This class is used to generate each arff line in a model according to vars configuration. It is mainly called by buildmodel.java
  * 
  * 
- * @author eric
+ * @author Eric
  *
  */
 public class buildvector {
@@ -63,7 +63,7 @@ public class buildvector {
 	vars pto_variables = null;
 	
 	/**
-	 *  	constructeur, initialise le tableau de futures
+	 *  	constructor, initialize feature table
 	 * 
 	 */
 	public buildvector(vars variables){
@@ -72,9 +72,9 @@ public class buildvector {
 		pto_variables = variables;
 		
 		//-------------------------------------------------
-		// Charger les features lexicales - ingrédients
+		// Load lexical features - ingredients
 		//-------------------------------------------------
-		String pathToLexFeatures = variables.lexicalfutures;
+		String pathToLexFeatures = variables.lexicalfeatures;
 		// fill the list of features
 		try {
 			
@@ -87,7 +87,7 @@ public class buildvector {
 					 String[] featureref = featureline.split("\t"); 
 					 String[] featurename = featureref[0].split("=");
 					 
-					 // garder tout sauf balises et commentaires
+					 // keep everything but markups and comments
 					 if (! featurename[0].contains("#") && ! featurename[0].contains("<")){
 			
 						 lexFeatures.add(featurename[0].toLowerCase());
@@ -96,12 +96,12 @@ public class buildvector {
 
 					 }
 					 
-					 // si reduction de parametres - fin de boucle
+					 // if less params - end of loop
 					 if ( featcount >= variables.parmsreduce && variables.parmsreduce != -1 ) { break;}
 					 
 			}
 			System.out.println("Lex Feature count:"+ featcount);
-
+			reader.close();
 		} 
 		catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -113,7 +113,7 @@ public class buildvector {
 		}
 
 		//-------------------------------------------------
-		// Charger les features lexicales pour ponderation - vocab moydiff
+		// Load weighted lexical features - vocab moydiff
 		//-------------------------------------------------
 		String pathToWeightedLexFeatures = variables.weightedlexicalfeats;
 		// fill the list of features
@@ -128,7 +128,7 @@ public class buildvector {
 					 String[] featureref = featureline.split("\t"); 
 					 String[] featurename = featureref[0].split("=");
 					 
-					 // garder tout sauf balises et commentaires
+					 // keep everything but markups and comments
 					 if (! featurename[0].contains("#") && ! featurename[0].contains("<")){
 			
 						 weightedLexFeatures.add(featurename[0].toLowerCase());
@@ -137,7 +137,7 @@ public class buildvector {
 
 					 }
 					 
-					 // si reduction de parametres - fin de boucle
+					 // if less params - end of loop
 					 if ( featcount >= variables.parmsreduce && variables.parmsreduce != -1 ) { break;}
 					 
 			}
@@ -155,7 +155,7 @@ public class buildvector {
 		}
 				
 		//-------------------------------------------------
-		// Charger les features ngrams - actions
+		// Load ngram features - actions
 		//-------------------------------------------------
 		String pathToNgramsFeatures = variables.pathToNgramsFeatures;
 		// fill the list of features
@@ -170,7 +170,7 @@ public class buildvector {
 					 String[] featureref = featureline.split("\t"); 
 					 String[] featurename = featureref[0].split("=");
 					 
-					 // garder tout sauf balises et commentaires
+					 // keep everything but markups and comments
 					 if (! featurename[0].contains("#") && ! featurename[0].contains("<")){
 						 
 						 featurename[0] = featurename[0].replaceAll("_", " ");
@@ -182,7 +182,7 @@ public class buildvector {
 
 					 }
 					 
-					 // si reduction de parametres - fin de boucle
+					 // if less params - end of loop
 					 if ( featcount >= variables.parmsreduce && variables.parmsreduce != -1 ) { break;}
 					 
 			}
@@ -200,7 +200,7 @@ public class buildvector {
 		}
 		
 		//-------------------------------------------------
-		// Charger les features verbs par poids
+		// Load weighted verb features
 		//-------------------------------------------------
 		String pathtoweightedverbfeats = variables.pathtoweightedverbfeats;
 		
@@ -216,7 +216,7 @@ public class buildvector {
 					 String[] featureref = featureline.split("\t"); 
 					 String[] featurename = featureref[0].split("=");
 					 
-					 // garder tout sauf balises et commentaires
+					 // keep everything but markups and comments
 					 if (! featurename[0].contains("#") && ! featurename[0].contains("<")){
 			
 						 VerbFeatures.add(featurename[0].toLowerCase());
@@ -249,7 +249,7 @@ public class buildvector {
 	}
 	
 	/**
-	 * @param model = 1 pour le type de plat / 2 pour la difficulté
+	 * @param model = 1 for meal type / 2 for difficulty
 	 * @return
 	 */
 	public String genArffHeader(int model){
@@ -268,7 +268,7 @@ public class buildvector {
 			
 			if (pto_variables.uselexfeat){
 			
-				// sortir les features
+				// output features
 				for( int x =0; x < lexFeatures.size(); x++){
 					
 					String feature = lexFeatures.get(x);
@@ -283,7 +283,7 @@ public class buildvector {
 
 			if (pto_variables.useweightedlexfeat){
 			
-				// sortir les features ponderees
+				// output weighted features
 				for( int x =0; x < weightedLexFeatures.size(); x++){
 					
 					String feature = weightedLexFeatures.get(x);
@@ -298,7 +298,7 @@ public class buildvector {
 			
 			if (pto_variables.usengramfeat){	
 			
-				// sortir les features ngrams
+				// output ngram features
 				for( int x =0; x < NgramsFeatures.size(); x++){
 					
 					String feature = NgramsFeatures.get(x);
@@ -309,7 +309,6 @@ public class buildvector {
 					headerArff = headerArff + "@ATTRIBUTE " + ref + "\tREAL \t\t%" + feature + "\n";
 					
 				}
-				
 				
 			}
 			
@@ -334,7 +333,7 @@ public class buildvector {
 				
 			}	
 			
-			// sortir les classes
+			// write classes
 			headerArff = headerArff + "@ATTRIBUTE class 	{plat-principal, dessert, entree}\n\n";
 			headerArff = headerArff + "@DATA\n";
 		}
@@ -349,7 +348,7 @@ public class buildvector {
 			}
 					
 			if (pto_variables.uselexfeat){
-					// sortir les features sémantiques
+					// write semantic features
 					for( int x =0; x < lexFeatures.size(); x++){
 						
 						String feature = lexFeatures.get(x);
@@ -364,7 +363,7 @@ public class buildvector {
 
 			if (pto_variables.useweightedlexfeat){
 			
-				// sortir les features ponderees
+				// write weighted features
 				for( int x =0; x < weightedLexFeatures.size(); x++){
 					
 					String feature = weightedLexFeatures.get(x);
@@ -379,7 +378,7 @@ public class buildvector {
 			
 			if (pto_variables.usengramfeat){
 				
-					// sortir les features ngrams
+					// write ngram features
 					for( int x =0; x < NgramsFeatures.size(); x++){
 						
 						String feature = NgramsFeatures.get(x);
@@ -413,7 +412,7 @@ public class buildvector {
 				
 			}			
 			
-			// sortir les classes
+			// write classes
 			headerArff = headerArff + "@ATTRIBUTE class 	{tres-facile, facile, moyennement-difficile, difficile}\n";
 			headerArff = headerArff + "@DATA\n";
 		}
@@ -430,11 +429,11 @@ public class buildvector {
 	 * 
 	 * 
 	 * 
-	 * @param textseq Texte de la recette
-	 * @param classtype Type de recette
-	 * @param classcost Cout de la recette
-	 * @param nbing Nombre d'ingredients de la recette (lignes de la liste)
-	 * @param classdif Difficulté de la recette
+	 * @param textseq recipe text
+	 * @param classtype recipe type
+	 * @param classcost recipe cost
+	 * @param nbing Nb ingredient in recipe (lines of list)
+	 * @param classdif recipe difficulty
 	 * @return
 	 */
 	public String getArffLine(String title, String textseq, String classtype, String classcost, int nbing, String classdif, int model){
@@ -445,7 +444,7 @@ public class buildvector {
 		textseq = textseq.replaceAll("\\s+", " ");
 		textseq = textseq.toLowerCase();
 		
-		// fill the sizes
+		// fill sizes
 		if (pto_variables.sizeoftext){
 			
 			String[] titlecontent = title.split(" ");
@@ -457,9 +456,9 @@ public class buildvector {
 			vectorArff = vectorArff + sizeoftgitle + "," + sizeofrecipy +",";
 		}
 		
-		// fill the features values
+		// fill feature values
 		if (pto_variables.uselexfeat){
-			// sortir les features lexicales
+			// lexical features
 			for( int x =0; x < lexFeatures.size(); x++){
 		
 				if (textseq.contains(lexFeatures.get(x))){
@@ -474,9 +473,9 @@ public class buildvector {
 			}
 		}
 
-		// fill the weighted features values
+		// fill weighted feature values
 		if (pto_variables.useweightedlexfeat){
-			// sortir les features lexicales ponderees
+			// weighted lexical features
 			for( int x =0; x < weightedLexFeatures.size(); x++){
 		
 				if (textseq.contains(weightedLexFeatures.get(x))){
@@ -493,7 +492,7 @@ public class buildvector {
 			}
 		}
 		
-		// sortir les features ngrams
+		// ngram features
 		if (pto_variables.usengramfeat){
 			
 			for( int x =0; x < NgramsFeatures.size(); x++){
@@ -514,11 +513,11 @@ public class buildvector {
 		}
 		
 		
-		// sortir le nombre d'ingrédients
+		// nb of ingredients
 		if (pto_variables.amountofingreds){
-			/*// extraction depuis la liste globale
+			/*// extraction from global list
 			int numoflexfeat = 0;
-			// sortir les features lexicales
+			// lexical features
 			for( int x =0; x < lexFeatures.size(); x++){
 		
 				if (textseq.contains(lexFeatures.get(x))){
@@ -530,12 +529,12 @@ public class buildvector {
 			}
 			vectorArff = vectorArff + numoflexfeat + ",";
 			*/
-			// nb de ligne de la liste de la recette
+			// nb lines of recipe list
 			vectorArff = vectorArff + nbing + ",";
 		}
 		
 		
-		// sortir les features verbes (3)
+		// verb features (3)
 		//
 		// ArrayList<String> VerbFeatures = new ArrayList<String>(); 
 		// HashMap<String, Integer> VerbFeaturesWeight = new HashMap<String, Integer>();
@@ -545,7 +544,7 @@ public class buildvector {
 			int verb2 = 0;
 			int verb3 = 0;
 			
-			// compter les occurences
+			// occurrence count
 			String[] wordsintext = textseq.split(" ");
 			
 			for( int x =0; x < VerbFeatures.size(); x++){
@@ -554,7 +553,7 @@ public class buildvector {
 				for( int y =0; y <  wordsintext.length; y++){
 					if (wordsintext[y].contains(VerbFeatures.get(x))){
 						
-						// incrément
+						// increment
 						int refdiff = VerbFeaturesWeight.get(VerbFeatures.get(x)); // numero de diff 1 2 ou 3
 						
 						if ( refdiff == 1 ) {verb1++;}
@@ -566,13 +565,13 @@ public class buildvector {
 				
 			}
 			
-			// ajouter les 3 numéros de verbes
+			// add verb numbers (3)
 			vectorArff = vectorArff + verb1 + "," + verb2 + "," + verb3 + ",";
 			
 			
 		}
 		
-		// sortir le cout de la recette
+		// recipe cost
 		if (pto_variables.usecost){
 			//System.out.println(classcost);
 			if ( classcost.contains("Bon") ) 
@@ -583,7 +582,7 @@ public class buildvector {
 		}		
 		
 		
-		// types de plats
+		// meal types
 		if (model == 1){
 			//System.out.println(classtype);
 			if ( classtype.contains("principal") ) 
@@ -591,10 +590,10 @@ public class buildvector {
 			else if ( classtype.contains("Dessert") ) 
 				{ vectorArff = vectorArff + "dessert"; }
 			else { vectorArff = vectorArff + "entree"; }
-			// sortir les classes
+			// classes
 		}
 		
-		// difficulté
+		// difficulty
 		if (model == 2){
 			//System.out.println(classtype);
 			if ( classdif.contains("facile") ) 
@@ -604,10 +603,10 @@ public class buildvector {
 			else if ( classdif.contains("Moyennement") ) 
 			{ vectorArff = vectorArff + "moyennement-difficile"; }
 			else { vectorArff = vectorArff + "difficile"; }
-			// sortir les classes
+			// classes
 		}
 		
-		vectorArff = vectorArff;
+//		vectorArff = vectorArff;
 		
 		return vectorArff;
 		

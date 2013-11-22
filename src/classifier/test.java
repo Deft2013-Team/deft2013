@@ -3,30 +3,30 @@ package classifier;
 /**
  * 
  * Classifier suite developed for DEFT2013 Machine Learning and Classification Task 
- * applied focusing on the automatic analysis of recipes in French.
+ * focusing on the automatic analysis of recipes in French.
  * 
  * http://deft.limsi.fr/2013/index.php?id=1&lang=en
  * 
  * Paper is on ResearchGate at:
  * http://goo.gl/vSVBU
  
- * The code authors : 
- * 			Dr Eric Charton http://www.echarton.con twitter/ericcharton
+ * The code authors: 
+ * 			Dr Eric Charton http://www.echarton.com twitter.com/ericcharton
  * 			Dr Marie-Jean Meurs http://mjmrsc.com/research/ twitter.com/mjmrsc
  * 
  * The scientific contributors
- * 	        Dr Eric Charton (1), Dr Marie-jean Meurs (2), Dr Ludovic Jean-Louis (1), Pr Michel Gagnon (1)
+ * 	        Dr Eric Charton (1), Dr Marie-Jean Meurs (2), Dr Ludovic Jean-Louis (1), Pr Michel Gagnon (1)
  * 			(1)(Polytechnique Montréal)(2)Concordia university
  * 
  * This java tool uses Weka, LibSVM to solve the classification Task of DEFT2013 ML campaign. It is 
  * publicly released to allow experience verification and student training. 
  * 
- * Please free to use it with official corpus resources or with the ARFF provided. 
+ * Please feel free to use it with official corpus resources or with the provided ARFF files. 
  * 
- * This software is free to use, modifiy and redistribute under Creative Commons by-nc/3.0 Licence Term
+ * This software is free to use, modify and redistribute under Creative Commons by-nc/3.0 License Term
  * http://creativecommons.org/licenses/by-nc/3.0/
  * 
- * @author eric, MJ
+ * @author Eric, MJ
  *
  */
 
@@ -65,20 +65,18 @@ public class test implements Serializable {
 
 		vars variables = new vars();
 		
-		// path du modele T1 / interne tâche 2 - difficulté
-		// String pathToModel = "/home/eric/svn/lab/recherche/deft13/models/t1-N-bayes.model";
-		String pathToModel = "/home/eric/svn/lab/recherche/deft13/models/t1-LMT.model";
-		String pathToModelArff     = "/home/eric/svn/lab/recherche/deft13/arff/mj_verb_cost_nbing_wfeat_1_bestgreedy_mdif_ngram_bestgreedy.arff";
-		// String pathToModelTestArff = "/home/eric/svn/lab/recherche/deft13/arff/mj_verb_cost_nbing_wfeat_1_bestgreedy_mdif_ngram_bestgreedy.arff";
-		String pathToModelTestArff = "/home/eric/svn/lab/recherche/deft13/arff/test_T1.arff";
+		// path for model T1 / internal task 2 - difficulty
+		// String pathToModel = variables.myPath + "deft13/models/t1-N-bayes.model";
+		String pathToModel = variables.myPath + "deft13/models/t1-LMT.model";
+		String pathToModelArff = variables.myPath + "deft13/arff/model_difficulty.arff";
+		String pathToModelTestArff = variables.myPath + "deft13/arff/test_T1.arff";
 		String outputRes = "tache1-diff-2.csv";
 		
 		// path du modele T2 / interne tâche 1 - type
 		if (variables.modelType == 1){
-			pathToModel = "/home/eric/svn/lab/recherche/deft13/models/t2-SVM.model";
-			pathToModelArff     = "/home/eric/svn/lab/recherche/deft13/arff/modele-type-mixed-2.arff";
-			//pathToModelTestArff = "/home/eric/svn/lab/recherche/deft13/arff/modele-type-mixed-2.arff";
-			pathToModelTestArff = "/home/eric/svn/lab/recherche/deft13/arff/test_T2.arff";
+			pathToModel = variables.myPath + "deft13/models/t2-SVM.model";
+			pathToModelArff = variables.myPath + "deft13/arff/modele_type.arff";
+			pathToModelTestArff = variables.myPath + "deft13/arff/test_T2.arff";
 			outputRes = "tache2-type.csv";
 		}
 		
@@ -107,7 +105,7 @@ public class test implements Serializable {
 		
 		try {
 			
-			// deserialize classifier (en gros ça veut dire qu'on le charge :-)
+			// de-serialize classifier (en gros ça veut dire qu'on le charge :-)
 			Classifier cls = (Classifier) weka.core.SerializationHelper.read(pathToModel);
 			// System.out.println("Reloading classifier : " + cls.toString() + "Classifier loaded");
 			// cls = (Classifier) weka.core.SerializationHelper.read(pathToModel);
@@ -145,7 +143,7 @@ public class test implements Serializable {
 			 
 			 
 			 // -------------------------------
-			 // eval par instances		 
+			 // evaluation per instances		 
 			 //--------------------------------
 			 for (int i = 0; i < test.numInstances(); i++) {
 				  int pred = (int)cls.classifyInstance(test.instance(i));
@@ -158,32 +156,32 @@ public class test implements Serializable {
 			 System.out.println("---------------------------");
 			 
 			// -------------------------------
-			// eval par instances depuis le ARFF		 
+			// evaluation per instances from ARFF		 
 			//--------------------------------
 			 BufferedReader reader3 = new BufferedReader(new FileReader(pathToModelTestArff));
 			 String text = ""; int z=0; 
 			 String headarff = "";
 			 String arff = "";
 			 
-			 // cherche Data
+			 // browse data
 			 while (( text = reader3.readLine()) != null) {
 				 
 				 headarff = headarff + text + "\n"; 
 				 if (text.contains("@DATA")) break;
 			 }
-			 // traite chaque ligne
+			 // handle each line
 			 while (( text = reader3.readLine()) != null) {
 				 
-				 // lire les données
+				 // read data
 				 if (text.startsWith("%")){
 					 
-					 // extraire les donnees
+					 // extract data
 					 String seqcontent = reader3.readLine(); // datas
 					 
-					 // extraire le numéro
+					 // extract number
 					 String numref = text.replace("%", "");
 					 
-					 // sortir un ARFF
+					 // output ARFF
 					 arff = headarff + "\n" + seqcontent + "\n";
 					// Create test ARFF file on disk
 					 try{
@@ -216,6 +214,9 @@ public class test implements Serializable {
 				 z++;
 			 }
 			
+			 reader.close();
+			 reader2.close();
+			 reader3.close();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
