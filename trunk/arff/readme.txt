@@ -11,11 +11,11 @@
 * eric.charton@polymtl.ca
 * twitter/ericcharton
 *
-* This software is free to use, modifiy and redistribute under 
-* Creative Commons by-nc/3.0 Licence Term
+* This software is free to use, modify and redistribute under 
+* Creative Commons by-nc/3.0 License Term
 * http://creativecommons.org/licenses/by-nc-sa/3.0/
 *
-* This licence means, do anything with it but make money.
+* This license means, do anything with it but make money.
 * (if you make money, share it with us :-)
 *
 * (c) Dr Eric Charton & Dr Marie-Jean Meurs
@@ -58,28 +58,28 @@ ngramsSize = 2;
 
 * on model difficulty
 
-	/* modele diff */
+	/* model difficulty */
 	uselexfeat = false;
 	useweightedlexfeat = true;
 	usengramfeat = true;
 	useverbfeat = true;
 	usecost = true;
 
-	// features internes
+	// internal features
 	sizeoftext = true; // amount of words in text and title
-	amountofingreds = true; // amount of ingedients according to list
+	amountofingreds = true; // amount of ingredients according to list
 
 
-* on model type of recipies
+* on model type of recipes
 
-	// Déclaration d'après modele type -> 1
-	// sélection des features conservées
+	// model type -> 1
+	// feature selection
 	public boolean uselexfeat = true;
 	public boolean useweightedlexfeat = false;
 	public boolean usengramfeat = true;
 	public boolean useverbfeat = true;
 	public boolean usecost = true;
 
-	// features internes
+	// internal features
 	public boolean sizeoftext = true; // amount of words in text and title
-	public boolean amountofingreds = true; // amount of ingedients according to list
+	public boolean amountofingreds = true; // amount of ingredients according to list
