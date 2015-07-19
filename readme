@@ -9,7 +9,10 @@
 * 
 * For information contact
 * eric.charton@polymtl.ca
-* twitter/ericcharton
+* twitter @ericcharton
+* 
+* marie-jean.meurs@concordia.ca
+* twitter @mjmrsc
 *
 * This software is free to use, modify and redistribute under 
 * Creative Commons by-nc/3.0 License Term
@@ -24,7 +27,7 @@
 
 !!! Caution !!!
 
-This software (and data) set is intended for students as a way to experiment machine learning with weka and for researcher as a reproducible experiment
+This software (and data set) is intended for students as a way to experiment machine learning with Weka and for researcher as a reproducible experiment
 of DEFT 2013. THIS IS NOT SOMETHING EASY TO USE AND DEPLOY. You need machine learning, java and weka skills to use this package. We
 can provide a litle help ... but not too much :-)
 
