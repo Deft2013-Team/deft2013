@@ -1,3 +1,5 @@
+# Systems developped for the DEFT2013 evaluation campaign 
+
 **********************************************************
 *
 * DEFT2013 evaluation campaign
@@ -8,10 +10,7 @@
 * http://goo.gl/vSVBU
 * 
 * For information contact
-* eric.charton@polymtl.ca
 * twitter @ericcharton
-* 
-* marie-jean.meurs@concordia.ca
 * twitter @mjmrsc
 *
 * This software is free to use, modify and redistribute under 
@@ -29,7 +28,7 @@
 
 This software (and data set) is intended for students as a way to experiment machine learning with Weka and for researcher as a reproducible experiment
 of DEFT 2013. THIS IS NOT SOMETHING EASY TO USE AND DEPLOY. You need machine learning, java and weka skills to use this package. We
-can provide a litle help ... but not too much :-)
+can provide a little help ... but not too much :-)
 
 Enjoy
 E.  
