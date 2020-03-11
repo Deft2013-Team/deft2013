@@ -1,7 +1,5 @@
 # Systems developped for the DEFT2013 evaluation campaign 
 
----
-
 DEFT2013 evaluation campaign
 http://deft.limsi.fr/2013/index.php?id=1&lang=en 
 Wikimeta Lab System
